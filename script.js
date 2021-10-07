@@ -56,9 +56,9 @@ function handleInput(event) {
 
     if (displayMatrix[currentIndex].length = 3 && newToken === 'equals') {
         displayMatrix[currentIndex] = doCalc(displayMatrix[currentIndex]);
-    } else if newToken === 'clear' {
+    } else if (newToken === 'clear') {
         displayMatrix[currentIndex] = [];
-    } else if newToken === 'clearall' {
+    } else if (newToken === 'clearall') {
         displayMatrix = [];
     } else {
         displayMatrix[currentIndex].push(newToken);
