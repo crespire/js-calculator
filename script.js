@@ -14,24 +14,32 @@ function doDivide(x, y) {
     return x / y;
 }
 
-function doCalc(...queue) {
+function doCalc(queue) {
     /**
      * Find what operation has been requested
      * Split the queue array into operands
      * Perform and return calculation
      */
+     const doOps = ['+', '-', '*', '/'];
+     const operation = queue.filter(e => doOps.includes(e));    
+     
+     console.dir(queue);
+     let x = queue.slice(0, queue.indexOf(operation)-1).join('');
+     let y = queue.slice(queue.indexOf(operation), queue.length).join('');
+     console.log(`Calculate: ${x} ${operation} ${y}`);
 
-     const doOps = ['add', 'subtract', 'times', 'divide'];
-     const operation = queue.filter(e => doOps.includes(e));
-
-     console.log(`We've been asked to ${operation}`);
+     switch (operation) {
+         // select the right operation
+     }
 }
 
-function updateDisplay(newLine, ...queue) {
-    queue.forEach((e) => {
-       let newDiv = document.createElement('div');
-       newDiv.textContent = e.join();
-       displayDiv.appendChild(newDiv);
+function updateDisplay(display) {
+    displayDiv.innerHTML = '';
+
+    display.forEach((line) => {
+        let newDiv = document.createElement('div');
+        newDiv.textContent = line.join(' ');;
+        displayDiv.appendChild(newDiv);
     });
 }
 
@@ -54,20 +62,35 @@ function handleInput(event) {
     let newToken = event.target.id;
     let needNewLine = false;
 
-    if (displayMatrix[currentIndex].length = 3 && newToken === 'equals') {
-        displayMatrix[currentIndex] = doCalc(displayMatrix[currentIndex]);
-    } else if (newToken === 'clear') {
-        displayMatrix[currentIndex] = [];
-    } else if (newToken === 'clearall') {
-        displayMatrix = [];
-    } else {
-        displayMatrix[currentIndex].push(newToken);
+
+    if (displayMatrix[currentIndex] === undefined) {
+        displayMatrix[currentIndex] = new Array();
     }
 
-    updateDisplay(needNewLine, displayMatrix);
+    switch (newToken) {
+        case 'clear':
+            displayMatrix[currentIndex] = new Array();
+            break;
+        case 'clearall':
+            displayMatrix = new Array(5).fill(new Array());
+            currentIndex = 0;
+            break;
+        case '=':
+            let answer = doCalc(displayMatrix[currentIndex]);
+            displayMatrix[currentIndex].push('=');
+            displayMatrix[currentIndex].push(answer);
+            currentIndex = (currentIndex + 1) % displayMatrix.length;
+            break;
+        default:
+            console.log(`Add to current line: ${newToken}`);
+            displayMatrix[currentIndex].push(newToken);
+            break;
+    }
+
+    updateDisplay(displayMatrix);
 }
 
-let displayMatrix = [];
+let displayMatrix = new Array(5);
 let currentIndex = 0;
 const displayDiv = document.querySelector('#display');
 const inputsDiv = document.querySelector('#inputs');
