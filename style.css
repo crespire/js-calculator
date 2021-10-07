@@ -57,7 +57,7 @@ button {
     font-size: 12px;
 }
 
-#zero {
+button[id="10"] {
     grid-column: 1 / span 2;
 }
 
