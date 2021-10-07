@@ -31,24 +31,27 @@ function handleInput(event) {
      *   this is either a number, operation, or command.
      * 
      * If command is
-     *   equals and queue is full, then run the operation and return the result.
-     *   clear, then clear the queue
+     *   equals and queue is full then run the operation on the current
+    *      inded and return the result.
+     *   clear, then clear the current index
+     *   clear all, then clear all indicies of queue
      * else
-     *   add token to queue
+     *   add token to queue at the current index
      * 
      * Update Display
      */
     let newToken = event.target.id;
     let needNewLine = false;
 
-    if (currentQueue.length = 3 && newToken === "equals") {
-       doCalc(currentQueue);
+    if (displayMatrix[currentIndex].length = 3 && newToken === "equals") {
+       doCalc(displayMatrix[currentIndex]);
     }
 
-    updateDisplay(needNewLine, currentQueue);
+    updateDisplay(needNewLine, displayMatrix);
 }
 
-let currentQueue = [];
+let displayMatrix = [];
+let currentIndex = 0;
 const displayDiv = document.querySelector('#display');
 const inputsDiv = document.querySelector('#inputs');
 inputsDiv.addEventListener('click', handleInput);
