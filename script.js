@@ -24,4 +24,4 @@ function handleInput(event) {
 
 let currentQueue = [];
 const inputsDiv = document.querySelector("#inputs");
-inputsDiv.addEventListener('mouseclick', handleInput);
+inputsDiv.addEventListener('click', handleInput);
