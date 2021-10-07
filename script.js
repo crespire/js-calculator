@@ -15,13 +15,24 @@ function doDivide(x, y) {
 }
 
 function doCalc(...queue) {
-    
+    /**
+     * Find what operation has been requested
+     * Split the queue array into operands
+     * Perform and return calculation
+     */
+
+     const doOps = ['add', 'subtract', 'times', 'divide'];
+     const operation = queue.filter(e => doOps.includes(e));
+
+     console.log(`We've been asked to ${operation}`);
 }
 
 function updateDisplay(newLine, ...queue) {
-    /**
-     * 
-     */
+    queue.forEach((e) => {
+       let newDiv = document.createElement('div');
+       newDiv.textContent = e.join();
+       displayDiv.appendChild(newDiv);
+    });
 }
 
 function handleInput(event) {
@@ -43,8 +54,14 @@ function handleInput(event) {
     let newToken = event.target.id;
     let needNewLine = false;
 
-    if (displayMatrix[currentIndex].length = 3 && newToken === "equals") {
-       doCalc(displayMatrix[currentIndex]);
+    if (displayMatrix[currentIndex].length = 3 && newToken === 'equals') {
+        displayMatrix[currentIndex] = doCalc(displayMatrix[currentIndex]);
+    } else if newToken === 'clear' {
+        displayMatrix[currentIndex] = [];
+    } else if newToken === 'clearall' {
+        displayMatrix = [];
+    } else {
+        displayMatrix[currentIndex].push(newToken);
     }
 
     updateDisplay(needNewLine, displayMatrix);
