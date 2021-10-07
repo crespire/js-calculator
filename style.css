@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+#calculator {
+    width: 200px;
+}
+
+#display {
+    height: 100px;
+    background-color: antiquewhite;
+}
+
+#inputs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    column-gap: 5px;
+    row-gap: 5px;
+}
+
+#inputs button {
+    box-sizing: border-box;
+    height: 50px;
+}
+
+#zero {
+    grid-column: 1 / span 2;
+}
+
+#equals {
+    grid-column: 1 / span 2;
+    grid-row: 5 / span 2;
+}
+
+#clear {
+    grid-column: 3 / span 2;
+    grid-row: 5 / span 2;
+}
