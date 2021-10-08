@@ -18,7 +18,7 @@ function splitLine(line) {
     const doOps = ['+', '-', '*', '/'];
     const operation = line.filter(e => doOps.includes(e));
     let x = line.slice(0, line.indexOf(operation)-1).join('');
-    let y = line.slice(queue.indexOf(operation), line.length).join('');
+    let y = line.slice(line.indexOf(operation), line.length).join('');
     let parsedLine = [x, operation, y];
     console.log(`Split to: ${x} ${operation} ${y}`);
     return parsedLine;
