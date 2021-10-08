@@ -34,20 +34,26 @@ function getTerms(line) {
             parsedLine.push(term);
             termTrack = line.indexOf(operator)+1;
             if (currInd === operations.length - 1) {
-                term = line.slice(line.indexOf(operations[currInd]) - line.length + 1).join('');
+                if (line.indexOf(operator) === line.length - 1) return;
+                currentStartIndex = line.indexOf(operator);
+                currentEndIndex = line.length - 1;
+                let backwards = currentStartIndex - currentEndIndex;
+                term = line.slice(backwards).join('');
                 parsedLine.push(term);
             }
         });
     } else {
-        parsedLine.push(line.slice());
+        parsedLine = line.slice();
     }
 
     return parsedLine;
 }
 
 function doCalc(line) {
+    const doOps = ['+', '-', '*', '/'];
     const operands = getTerms(line);
-    const operation = line[1];
+    const operation = line.find(e => doOps.includes(e));
+
     let x = operands[0];
     let y = operands[1];
 
@@ -113,14 +119,14 @@ function handleInput(event) {
             displayMatrix[currentIndex] = new Array();
             break;
         case 'clearall':
-            displayMatrix = new Array(5);
+            displayMatrix = new Array();
             currentIndex = 0;
             break;
         case '=':
             let answer = doCalc(displayMatrix[currentIndex]);
             console.log(`Got Anwer: ${answer}`);
-            currentIndex = (currentIndex + 1) % displayMatrix.length;
-            if (currentIndex===0 && displayMatrix.length > 0) displayMatrix.shift();
+            currentIndex = (currentIndex + 1) // % displayMatrix.length;
+            if (displayMatrix.length === 5) displayMatrix.shift();
             displayMatrix[currentIndex] = new Array();
             displayMatrix[currentIndex].push(answer);
             break;
@@ -130,7 +136,7 @@ function handleInput(event) {
 
             decimalCheck.forEach((term) => {
                 stopAdd = false;
-                if (term.includes('.')) return stopAdd = true;
+                if (term.toString().includes('.')) stopAdd = true;
             });
             if (stopAdd) break;
         default:
@@ -144,7 +150,7 @@ function handleInput(event) {
     console.log(currentIndex);
 }
 
-let displayMatrix = new Array(5);
+let displayMatrix = new Array();
 let currentIndex = 0;
 const displayDiv = document.querySelector('#display');
 const inputsDiv = document.querySelector('#inputs');
