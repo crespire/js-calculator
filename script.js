@@ -56,7 +56,8 @@ function updateDisplay(display) {
 
     display.forEach((line) => {
         let newDiv = document.createElement('div');
-        newDiv.textContent = line.join(' ');;
+        let operands = splitLine(line);
+        newDiv.textContent = operands.join(' ');;
         displayDiv.appendChild(newDiv);
     });
 }
