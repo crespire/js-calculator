@@ -14,22 +14,40 @@ function doDivide(x, y) {
     return x / y;
 }
 
+function splitLine(line) {
+    const doOps = ['+', '-', '*', '/'];
+    const operation = line.filter(e => doOps.includes(e));
+    let x = line.slice(0, line.indexOf(operation)-1).join('');
+    let y = line.slice(queue.indexOf(operation), line.length).join('');
+    let parsedLine = [x, operation, y];
+    console.log(`Split to: ${x} ${operation} ${y}`);
+    return parsedLine;
+}
+
 function doCalc(queue) {
     /**
      * Find what operation has been requested
      * Split the queue array into operands
      * Perform and return calculation
      */
-     const doOps = ['+', '-', '*', '/'];
-     const operation = queue.filter(e => doOps.includes(e));    
-     
-     console.dir(queue);
-     let x = queue.slice(0, queue.indexOf(operation)-1).join('');
-     let y = queue.slice(queue.indexOf(operation), queue.length).join('');
-     console.log(`Calculate: ${x} ${operation} ${y}`);
 
-     switch (operation) {
-         // select the right operation
+    const operands = splitLine(queue);
+    const operation = operands[1];
+
+    console.log(`Doing ${operation}`);
+    switch (operation) {
+        case '+':
+            return doAdd(operands[0], operands[2]);
+            break;
+        case '-':
+            return doSubtract(operands[0], operands[2]);
+            break;
+        case '*':
+            return doMultiply(operands[0], operands[2]);
+            break;
+        case '/':
+            return doDivide(operands[0], operands[2]);
+            break;
      }
 }
 
