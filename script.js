@@ -16,21 +16,26 @@ function doDivide(x, y) {
 
 function getTerms(line) {
     const doOps = ['+', '-', '*', '/'];
-    let operation = line.filter(e => doOps.includes(e));
+    let operations = line.filter(e => doOps.includes(e));
     let parsedLine = new Array;
-    let x = null;
-    let y = null;
 
-    if (operation.length === 1) {
-        x = line.slice(0, line.indexOf(operation[0])).join('');
-        y = line.slice(line.indexOf(operation[0]) - line.length + 1).join('');
-        parsedLine = [x, operation[0], y];
-    } else if (operation.length > 1) {
-        // Multi operation line.
-    } else {
-        x = line.slice().join('');
-        parsedLine = [x, '', ''];
-    }
+    /**
+     * For each operator
+     *  Get index, and split the previous term out. Push this to parsedLine
+     *  if index = length, then this is the last operator, so get last element too
+     */
+
+    let termTrack = 0;
+    operations.forEach((operator, currInd) => {
+        let term = line.slice(termTrack, line.indexOf(operator[currInd])).join('');
+        parsedLine.push(term);
+        termTrack = line.indexOf(operation[currInd]+1);
+        if (currInd === line.length - 1) {
+            term = line.slice(line.indexOf(operations[currInd]) - line.length + 1).join('');
+            parsedLine.push(term);
+        }
+    });
+
     return parsedLine;
 }
 
