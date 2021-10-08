@@ -130,7 +130,10 @@ function handleInput(event) {
             let decimalCheck = getTerms(displayMatrix[currentIndex]);
             let stopAdd = null;
 
-            if (decimalCheck.length >= 1) {
+            if (['+', '-', '*', '/'].includes(displayMatrix[currentIndex][-1])) {
+                // Last element is an operator, so this is a new term, we will break
+                stopAdd = false;   
+            } else if (decimalCheck.length >= 1) {
                 decimalCheck.forEach((term) => {
                     stopAdd = false;
                     if (term.toString().includes('.')) stopAdd = true;
