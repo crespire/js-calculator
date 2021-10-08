@@ -14,29 +14,26 @@ function doDivide(x, y) {
     return +x / +y;
 }
 
-function splitLine(line) {
+function getTerms(line) {
     const doOps = ['+', '-', '*', '/'];
     let operation = line.filter(e => doOps.includes(e));
     let parsedLine = null;
+    let x = null;
+    let y = null;
+
     if (operation.length > 0) {
-        let x = line.slice(0, line.indexOf(operation[0])).join('');
-        let y = line.slice(line.indexOf(operation[0]) - line.length + 1).join('');
+        x = line.slice(0, line.indexOf(operation[0])).join('');
+        y = line.slice(line.indexOf(operation[0]) - line.length + 1).join('');
         parsedLine = [x, operation[0], y];
     } else {
-        let x = line.slice().join('');
+        x = line.slice().join('');
         parsedLine = [x, '', ''];
     }
     return parsedLine;
 }
 
 function doCalc(line) {
-    /**
-     * Find what operation has been requested
-     * Split the queue array into operands
-     * Perform and return calculation
-     */
-
-    const operands = splitLine(line);
+    const operands = getTerms(line);
     const operation = operands[1];
 
     console.log(`Doing ${operands}`);
@@ -112,7 +109,7 @@ function handleInput(event) {
             currentIndex = (currentIndex + 1) % displayMatrix.length;
             break;
         case '.':
-            let decimalCheck = splitLine(displayMatrix[currentIndex]);
+            let decimalCheck = getTerms(displayMatrix[currentIndex]);
             if (decimalCheck[2].length === 0 && decimalCheck[0].includes('.')) break;
             if (decimalCheck[2].length > 0 && decimalCheck[2].includes('.')) break;
         default:
