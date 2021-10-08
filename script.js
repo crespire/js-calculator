@@ -28,8 +28,9 @@ function getTerms(line) {
     let termTrack = 0;
     if (operations.length > 0) {
         operations.forEach((operator, currInd) => {
+            let currentStartIndex = termTrack;
             let currentEndIndex = line.indexOf(operator);
-            let term = line.slice(termTrack, line.indexOf(operator[currInd])).join('');
+            let term = line.slice(currentStartIndex, currentEndIndex).join('');
             parsedLine.push(term);
             termTrack = line.indexOf(operator)+1;
             if (currInd === operations.length - 1) {
@@ -46,21 +47,23 @@ function getTerms(line) {
 
 function doCalc(line) {
     const operands = getTerms(line);
-    const operation = operands[1];
+    const operation = line[1];
+    let x = operands[0];
+    let y = operands[1];
 
     console.log(`Doing ${operands}`);
     switch (operation) {
         case '+':
-            return doAdd(operands[0], operands[2]);
+            return doAdd(x, y);
             break;
         case '-':
-            return doSubtract(operands[0], operands[2]);
+            return doSubtract(x, y);
             break;
         case '*':
-            return doMultiply(operands[0], operands[2]);
+            return doMultiply(x, y);
             break;
         case '/':
-            return doDivide(operands[0], operands[2]);
+            return doDivide(x, y);
             break;
      }
 }
@@ -116,9 +119,10 @@ function handleInput(event) {
         case '=':
             let answer = doCalc(displayMatrix[currentIndex]);
             console.log(`Got Anwer: ${answer}`);
-            displayMatrix[currentIndex].push('=');
-            displayMatrix[currentIndex].push(answer);
             currentIndex = (currentIndex + 1) % displayMatrix.length;
+            if (currentIndex===0 && displayMatrix.length > 0) displayMatrix.shift();
+            displayMatrix[currentIndex] = new Array();
+            displayMatrix[currentIndex].push(answer);
             break;
         case '.':
             let decimalCheck = getTerms(displayMatrix[currentIndex]);

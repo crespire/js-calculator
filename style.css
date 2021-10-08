@@ -23,7 +23,7 @@ button {
 }
 
 #display {
-    min-height: 5em;
+    min-height: 6em;
     background-color: rgb(252, 251, 235);
     padding: 5px;
     margin-bottom: .75em;
