@@ -17,10 +17,10 @@ function doDivide(x, y) {
 function splitLine(line) {
     const doOps = ['+', '-', '*', '/'];
     let operation = line.filter(e => doOps.includes(e));
-    console.log(`Operation's value is ${operation}`);
+    console.log(`Operation's value is ${operation[0]}`);
     let x = line.slice(0, line.indexOf(operation)-1).join('');
     let y = line.slice(line.indexOf(operation), line.length).join('');
-    let parsedLine = [x, operation, y];
+    let parsedLine = [x, operation[0], y];
     return parsedLine;
 }
 
@@ -86,9 +86,7 @@ function handleInput(event) {
      * Update Display
      */
     let newToken = event.target.id;
-    let needNewLine = false;
-
-
+    
     if (displayMatrix[currentIndex] === undefined) {
         displayMatrix[currentIndex] = new Array();
     }
@@ -116,6 +114,7 @@ function handleInput(event) {
 
     updateDisplay(displayMatrix);
     console.dir(displayMatrix);
+    console.log(currentIndex);
 }
 
 let displayMatrix = new Array(5);
