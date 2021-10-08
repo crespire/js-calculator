@@ -117,8 +117,9 @@ function handleInput(event) {
             break;
         case '.':
             let decimalCheck = getTerms(displayMatrix[currentIndex]);
-            if (decimalCheck[2].length === 0 && decimalCheck[0].includes('.')) break;
-            if (decimalCheck[2].length > 0 && decimalCheck[2].includes('.')) break;
+            decimalCheck.forEach((term) => {
+                if (term.includes('.')) break;
+            });
         default:
             console.log(`Add to current line: ${newToken}`);
             displayMatrix[currentIndex].push(newToken);
