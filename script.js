@@ -33,7 +33,7 @@ function getTerms(line) {
             let term = line.slice(currentStartIndex, currentEndIndex).join('');
             parsedLine.push(term);
             termTrack = line.indexOf(operator)+1;
-            if (currInd === operations.length - 1) {
+            if (currInd === operations.length - 1 && line.length > 2) {
                 term = line.slice(line.indexOf(operator) - (line.length - 1) ).join('');
                 parsedLine.push(term);
             }
@@ -130,8 +130,7 @@ function handleInput(event) {
             let decimalCheck = getTerms(displayMatrix[currentIndex]);
             let stopAdd = null;
 
-            if (['+', '-', '*', '/'].includes(displayMatrix[currentIndex][-1])) {
-                // Last element is an operator, so this is a new term, we will break
+            if (['+', '-', '*', '/'].includes(displayMatrix[currentIndex].at(-1))) {
                 stopAdd = false;   
             } else if (decimalCheck.length >= 1) {
                 decimalCheck.forEach((term) => {
