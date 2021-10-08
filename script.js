@@ -29,14 +29,14 @@ function splitLine(line) {
     return parsedLine;
 }
 
-function doCalc(queue) {
+function doCalc(line) {
     /**
      * Find what operation has been requested
      * Split the queue array into operands
      * Perform and return calculation
      */
 
-    const operands = splitLine(queue);
+    const operands = splitLine(line);
     const operation = operands[1];
 
     console.log(`Doing ${operands}`);
@@ -112,11 +112,6 @@ function handleInput(event) {
             currentIndex = (currentIndex + 1) % displayMatrix.length;
             break;
         case '.':
-            /**
-             * Call splitLine on the current array, so we get the terms.
-             * If the left or right already have decimal, break so we don't
-             * push a second decimal.             * 
-            */
             let decimalCheck = splitLine(displayMatrix[currentIndex]);
             if (decimalCheck[2].length === 0 && decimalCheck[0].includes('.')) break;
             if (decimalCheck[2].length > 0 && decimalCheck[2].includes('.')) break;
