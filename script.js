@@ -17,9 +17,15 @@ function doDivide(x, y) {
 function splitLine(line) {
     const doOps = ['+', '-', '*', '/'];
     let operation = line.filter(e => doOps.includes(e));
-    let x = line.slice(0, line.indexOf(operation[0])).join('');
-    let y = line.slice(line.indexOf(operation[0]) - line.length + 1).join('');
-    let parsedLine = [x, operation[0], y];
+    let parsedLine = null;
+    if (operation.length > 0) {
+        let x = line.slice(0, line.indexOf(operation[0])).join('');
+        let y = line.slice(line.indexOf(operation[0]) - line.length + 1).join('');
+        parsedLine = [x, operation[0], y];
+    } else {
+        let x = line.slice().join('');
+        parsedLine = [x, '', ''];
+    }
     return parsedLine;
 }
 
@@ -108,10 +114,12 @@ function handleInput(event) {
         case '.':
             /**
              * Call splitLine on the current array, so we get the terms.
-             * If the left or right already have decimal, don't push new decimal.
-             * Otherwise, add decimal to the array.
+             * If the left or right already have decimal, break so we don't
+             * push a second decimal.             * 
             */
-            break;
+            let decimalCheck = splitLine(displayMatrix[currentIndex]);
+            if (decimalCheck[2].length === 0 && decimalCheck[0].includes('.')) break;
+            if (decimalCheck[2].length > 0 && decimalCheck[2].includes('.')) break;
         default:
             console.log(`Add to current line: ${newToken}`);
             displayMatrix[currentIndex].push(newToken);
