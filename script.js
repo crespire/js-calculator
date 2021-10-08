@@ -1,17 +1,17 @@
 function doAdd(x, y) {
-    return x + y;
+    return +x + +y;
 }
 
 function doSubtract(x, y) {
-    return x - y;
+    return +x - +y;
 }
 
 function doMultiply(x, y) {
-    return x * y;
+    return +x * +y;
 }
 
 function doDivide(x, y) {
-    return x / y;
+    return +x / +y;
 }
 
 function splitLine(line) {
