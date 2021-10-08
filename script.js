@@ -105,6 +105,13 @@ function handleInput(event) {
             displayMatrix[currentIndex].push(answer);
             currentIndex = (currentIndex + 1) % displayMatrix.length;
             break;
+        case '.':
+            /**
+             * Call splitLine on the current array, so we get the terms.
+             * If the left or right already have decimal, don't push new decimal.
+             * Otherwise, add decimal to the array.
+            */
+            break;
         default:
             console.log(`Add to current line: ${newToken}`);
             displayMatrix[currentIndex].push(newToken);
