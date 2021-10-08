@@ -17,14 +17,16 @@ function doDivide(x, y) {
 function getTerms(line) {
     const doOps = ['+', '-', '*', '/'];
     let operation = line.filter(e => doOps.includes(e));
-    let parsedLine = null;
+    let parsedLine = new Array;
     let x = null;
     let y = null;
 
-    if (operation.length > 0) {
+    if (operation.length === 1) {
         x = line.slice(0, line.indexOf(operation[0])).join('');
         y = line.slice(line.indexOf(operation[0]) - line.length + 1).join('');
         parsedLine = [x, operation[0], y];
+    } else if (operation.length > 1) {
+        // Multi operation line.
     } else {
         x = line.slice().join('');
         parsedLine = [x, '', ''];
