@@ -16,11 +16,11 @@ function doDivide(x, y) {
 
 function splitLine(line) {
     const doOps = ['+', '-', '*', '/'];
-    const operation = line.filter(e => doOps.includes(e));
+    let operation = line.filter(e => doOps.includes(e));
+    console.log(`Operation's value is ${operation}`);
     let x = line.slice(0, line.indexOf(operation)-1).join('');
     let y = line.slice(line.indexOf(operation), line.length).join('');
     let parsedLine = [x, operation, y];
-    console.log(`Split to: ${x} ${operation} ${y}`);
     return parsedLine;
 }
 
@@ -34,7 +34,7 @@ function doCalc(queue) {
     const operands = splitLine(queue);
     const operation = operands[1];
 
-    console.log(`Doing ${operation}`);
+    console.log(`Doing ${operands}`);
     switch (operation) {
         case '+':
             return doAdd(operands[0], operands[2]);
@@ -56,8 +56,15 @@ function updateDisplay(display) {
 
     display.forEach((line) => {
         let newDiv = document.createElement('div');
-        let operands = splitLine(line);
-        newDiv.textContent = operands.join(' ');;
+        let lineText = [];
+        line.forEach( (token) => {
+            if (['+','-','*','/','='].includes(token)) {
+                lineText.push(` ${token} `);
+            } else {
+                lineText.push(token);
+            }
+        });
+        newDiv.textContent = lineText.join('');
         displayDiv.appendChild(newDiv);
     });
 }
@@ -96,6 +103,7 @@ function handleInput(event) {
             break;
         case '=':
             let answer = doCalc(displayMatrix[currentIndex]);
+            console.log(`Got Anwer: ${answer}`);
             displayMatrix[currentIndex].push('=');
             displayMatrix[currentIndex].push(answer);
             currentIndex = (currentIndex + 1) % displayMatrix.length;
@@ -107,6 +115,7 @@ function handleInput(event) {
     }
 
     updateDisplay(displayMatrix);
+    console.dir(displayMatrix);
 }
 
 let displayMatrix = new Array(5);
