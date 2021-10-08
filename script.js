@@ -26,15 +26,20 @@ function getTerms(line) {
      */
 
     let termTrack = 0;
-    operations.forEach((operator, currInd) => {
-        let term = line.slice(termTrack, line.indexOf(operator[currInd])).join('');
-        parsedLine.push(term);
-        termTrack = line.indexOf(operation[currInd]+1);
-        if (currInd === line.length - 1) {
-            term = line.slice(line.indexOf(operations[currInd]) - line.length + 1).join('');
+    if (operations.length > 0) {
+        operations.forEach((operator, currInd) => {
+            let currentEndIndex = line.indexOf(operator);
+            let term = line.slice(termTrack, line.indexOf(operator[currInd])).join('');
             parsedLine.push(term);
-        }
-    });
+            termTrack = line.indexOf(operator)+1;
+            if (currInd === operations.length - 1) {
+                term = line.slice(line.indexOf(operations[currInd]) - line.length + 1).join('');
+                parsedLine.push(term);
+            }
+        });
+    } else {
+        parsedLine.push(line.slice());
+    }
 
     return parsedLine;
 }
@@ -117,9 +122,13 @@ function handleInput(event) {
             break;
         case '.':
             let decimalCheck = getTerms(displayMatrix[currentIndex]);
+            let stopAdd = null;
+
             decimalCheck.forEach((term) => {
-                if (term.includes('.')) break;
+                stopAdd = false;
+                if (term.includes('.')) return stopAdd = true;
             });
+            if (stopAdd) break;
         default:
             console.log(`Add to current line: ${newToken}`);
             displayMatrix[currentIndex].push(newToken);
