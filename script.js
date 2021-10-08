@@ -34,11 +34,7 @@ function getTerms(line) {
             parsedLine.push(term);
             termTrack = line.indexOf(operator)+1;
             if (currInd === operations.length - 1) {
-                if (line.indexOf(operator) === line.length - 1) return;
-                currentStartIndex = line.indexOf(operator);
-                currentEndIndex = line.length - 1;
-                let backwards = currentStartIndex - currentEndIndex;
-                term = line.slice(backwards).join('');
+                term = line.slice(line.indexOf(operator) - (line.length - 1) ).join('');
                 parsedLine.push(term);
             }
         });
@@ -125,7 +121,7 @@ function handleInput(event) {
         case '=':
             let answer = doCalc(displayMatrix[currentIndex]);
             console.log(`Got Anwer: ${answer}`);
-            currentIndex = (currentIndex + 1) // % displayMatrix.length;
+            currentIndex = (currentIndex + 1)
             if (displayMatrix.length === 5) displayMatrix.shift();
             displayMatrix[currentIndex] = new Array();
             displayMatrix[currentIndex].push(answer);
@@ -134,10 +130,12 @@ function handleInput(event) {
             let decimalCheck = getTerms(displayMatrix[currentIndex]);
             let stopAdd = null;
 
-            decimalCheck.forEach((term) => {
-                stopAdd = false;
-                if (term.toString().includes('.')) stopAdd = true;
-            });
+            if (decimalCheck.length >= 1) {
+                decimalCheck.forEach((term) => {
+                    stopAdd = false;
+                    if (term.toString().includes('.')) stopAdd = true;
+                });
+            }
             if (stopAdd) break;
         default:
             console.log(`Add to current line: ${newToken}`);
