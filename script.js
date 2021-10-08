@@ -17,9 +17,8 @@ function doDivide(x, y) {
 function splitLine(line) {
     const doOps = ['+', '-', '*', '/'];
     let operation = line.filter(e => doOps.includes(e));
-    console.log(`Operation's value is ${operation[0]}`);
-    let x = line.slice(0, line.indexOf(operation)-1).join('');
-    let y = line.slice(line.indexOf(operation), line.length).join('');
+    let x = line.slice(0, line.indexOf(operation[0])).join('');
+    let y = line.slice(line.indexOf(operation[0]) - line.length + 1).join('');
     let parsedLine = [x, operation[0], y];
     return parsedLine;
 }
@@ -96,7 +95,7 @@ function handleInput(event) {
             displayMatrix[currentIndex] = new Array();
             break;
         case 'clearall':
-            displayMatrix = new Array(5).fill(new Array());
+            displayMatrix = new Array(5);
             currentIndex = 0;
             break;
         case '=':
