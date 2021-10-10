@@ -18,19 +18,11 @@ function getTerms(line) {
     const doOps = ['+', '-', '*', '/'];
     let operations = line.filter(e => doOps.includes(e));
     let parsedLine = new Array;
-
-    /**
-     * For each operator
-     *  Get index, and split the previous term out. Push this to parsedLine
-     *  if index = length, then this is the last operator, so get last element too
-     */
-
     let termTrack = 0;
+
     if (operations.length > 0) {
         operations.forEach((operator, currInd) => {
-            let currentStartIndex = termTrack;
-            let currentEndIndex = line.indexOf(operator);
-            let term = line.slice(currentStartIndex, currentEndIndex).join('');
+            let term = line.slice(termTrack, line.indexOf(operator)).join('');
             parsedLine.push(term);
             termTrack = line.indexOf(operator)+1;
             if (currInd === operations.length - 1 && line.length > 2) {
@@ -47,11 +39,8 @@ function getTerms(line) {
 
 function doCalc(line) {
     const doOps = ['+', '-', '*', '/'];
-    const operands = getTerms(line);
+    const x, y = getTerms(line);
     const operation = line.find(e => doOps.includes(e));
-
-    let x = operands[0];
-    let y = operands[1];
 
     console.log(`Doing ${operands}`);
     switch (operation) {
@@ -89,21 +78,6 @@ function updateDisplay(display) {
 }
 
 function handleInput(event) {
-
-    /**
-     * Grab the event target's ID as a new token
-     *   this is either a number, operation, or command.
-     * 
-     * If command is
-     *   equals and queue is full then run the operation on the current
-    *      inded and return the result.
-     *   clear, then clear the current index
-     *   clear all, then clear all indicies of queue
-     * else
-     *   add token to queue at the current index
-     * 
-     * Update Display
-     */
     let newToken = event.target.id;
     
     if (displayMatrix[currentIndex] === undefined) {
@@ -145,6 +119,7 @@ function handleInput(event) {
                     if (term.toString().includes('.')) stopAdd = true;
                 });
             }
+
             if (stopAdd) break;
         default:
             console.log(`Add to current line: ${newToken}`);
