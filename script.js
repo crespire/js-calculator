@@ -118,6 +118,10 @@ function handleInput(event) {
             displayMatrix = new Array();
             currentIndex = 0;
             break;
+        /**
+         * add cases for operator signs that flow into the '=' case as well and check if there are two terms.
+         * If two terms, go to '=' case; otherwise if only 1 term, change the operation, otherwise there isn't a term, ignore the input.
+         */
         case '=':
             let answer = doCalc(displayMatrix[currentIndex]);
             console.log(`Got Anwer: ${answer}`);
