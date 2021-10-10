@@ -42,7 +42,7 @@ function doCalc(line) {
     const x, y = getTerms(line);
     const operation = line.find(e => doOps.includes(e));
 
-    console.log(`Doing ${operands}`);
+    console.log(`Doing ${x} ${operation} ${y}`);
     switch (operation) {
         case '+':
             return doAdd(x, y);
