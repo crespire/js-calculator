@@ -123,6 +123,9 @@ function handleInput(event) {
          * If two terms, go to '=' case; otherwise if only 1 term, change the operation, otherwise there isn't a term, ignore the input.
          */
         case '=':
+            /** 
+             * Have to check for if there's only one term. If there are two terms, then do answer stuff otherwise, ignore input.
+             */
             let answer = doCalc(displayMatrix[currentIndex]);
             console.log(`Got Anwer: ${answer}`);
             currentIndex = (currentIndex + 1)
@@ -150,8 +153,8 @@ function handleInput(event) {
     }
 
     updateDisplay(displayMatrix);
-    console.dir(displayMatrix);
-    console.log(currentIndex);
+    //console.dir(displayMatrix);
+    //console.log(currentIndex);
 }
 
 let displayMatrix = new Array();
