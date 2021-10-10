@@ -59,10 +59,10 @@ function doCalc(line) {
      }
 }
 
-function updateDisplay(display) {
+function updateDisplay(displayData) {
     displayDiv.innerHTML = '';
 
-    display.forEach((line) => {
+    displayData.forEach((line) => {
         let newDiv = document.createElement('div');
         let lineText = [];
         line.forEach( (token) => {
