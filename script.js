@@ -16,6 +16,9 @@ function doDivide(x, y) {
 
 function getTerms(line) {
     const doOps = ['+', '-', '*', '/'];
+
+    if (line === undefined) return;
+    
     let operations = line.filter(e => doOps.includes(e));
     let parsedLine = new Array;
     let termTrack = 0;
@@ -39,7 +42,7 @@ function getTerms(line) {
 
 function doCalc(line) {
     const doOps = ['+', '-', '*', '/'];
-    const x, y = getTerms(line);
+    const [x, y] = getTerms(line);
     const operation = line.find(e => doOps.includes(e));
 
     console.log(`Doing ${x} ${operation} ${y}`);
@@ -79,48 +82,64 @@ function updateDisplay(displayData) {
 
 function handleInput(event) {
     let newToken = event.target.id;
+    let termCheck = getTerms(displayMatrix[currentIndex]);
+    let stopAdd = null;
     
     if (displayMatrix[currentIndex] === undefined) {
         displayMatrix[currentIndex] = new Array();
     }
 
     switch (newToken) {
+        case 'inputs':
+            break;
+
         case 'clear':
             displayMatrix[currentIndex] = new Array();
             break;
+ 
         case 'clearall':
             displayMatrix = new Array();
             currentIndex = 0;
             break;
-        /**
-         * add cases for operator signs that flow into the '=' case as well and check if there are two terms.
-         * If two terms, go to '=' case; otherwise if only 1 term, change the operation, otherwise there isn't a term, ignore the input.
-         */
-        case '=':
-            /** 
-             * Have to check for if there's only one term. If there are two terms, then do answer stuff otherwise, ignore input.
-             */
-            let answer = doCalc(displayMatrix[currentIndex]);
-            console.log(`Got Anwer: ${answer}`);
-            currentIndex = (currentIndex + 1)
-            if (displayMatrix.length === 5) displayMatrix.shift();
-            displayMatrix[currentIndex] = new Array();
-            displayMatrix[currentIndex].push(answer);
-            break;
-        case '.':
-            let decimalCheck = getTerms(displayMatrix[currentIndex]);
-            let stopAdd = null;
 
+        case '.':
             if (['+', '-', '*', '/'].includes(displayMatrix[currentIndex].at(-1))) {
-                stopAdd = false;   
-            } else if (decimalCheck.length >= 1) {
-                decimalCheck.forEach((term) => {
+                stopAdd = false;
+            } else if (termCheck === undefined || termCheck.length === 0) {
+                stopAdd = false;
+            } else if (termCheck.length >= 1) {
+                termCheck.forEach((term) => {
                     stopAdd = false;
                     if (term.toString().includes('.')) stopAdd = true;
                 });
             }
 
             if (stopAdd) break;
+
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '=':
+            if (termCheck === undefined || termCheck.length === 0) {
+            } else if (termCheck.length === 0 && stopAdd === null) {
+                break;                
+            } else if (termCheck.length === 1 && ['+', '-', '*', '/'].includes(displayMatrix[currentIndex].at(-1)) && stopAdd === null) {
+                // Change operation
+                displayMatrix[currentIndex].splice(-1, 1, newToken);
+                break;
+            } else if (termCheck.length >= 2 && stopAdd === null) {
+                answer = doCalc(displayMatrix[currentIndex]);
+                console.log(`Got Answer: ${answer}`);
+                currentIndex = (currentIndex + 1)
+                if (displayMatrix.length === 5) displayMatrix.shift();
+                displayMatrix[currentIndex] = new Array();
+                displayMatrix[currentIndex].push(answer);
+                if (['+', '-', '*', '/'].includes(newToken)) {
+                    displayMatrix[currentIndex].push(newToken);
+                }
+                break;
+            }
         default:
             console.log(`Add to current line: ${newToken}`);
             displayMatrix[currentIndex].push(newToken);
@@ -128,8 +147,6 @@ function handleInput(event) {
     }
 
     updateDisplay(displayMatrix);
-    //console.dir(displayMatrix);
-    //console.log(currentIndex);
 }
 
 let displayMatrix = new Array();
