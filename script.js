@@ -15,8 +15,6 @@ function doDivide(x, y) {
 }
 
 function getTerms(line) {
-    const doOps = ['+', '-', '*', '/'];
-
     if (line === undefined) return;
     
     let operations = line.filter(e => doOps.includes(e));
@@ -41,7 +39,6 @@ function getTerms(line) {
 }
 
 function doCalc(line) {
-    const doOps = ['+', '-', '*', '/'];
     const [x, y] = getTerms(line);
     const operation = line.find(e => doOps.includes(e));
 
@@ -69,7 +66,7 @@ function updateDisplay(displayData) {
         let newDiv = document.createElement('div');
         let lineText = [];
         line.forEach( (token) => {
-            if (['+','-','*','/','='].includes(token)) {
+            if (doOps.includes(token)) {
                 lineText.push(` ${token} `);
             } else {
                 lineText.push(token);
@@ -78,6 +75,10 @@ function updateDisplay(displayData) {
         newDiv.textContent = lineText.join('');
         displayDiv.appendChild(newDiv);
     });
+}
+
+function mapKeyboard(event) {
+    // Map keyboard presses and call handleInput
 }
 
 function handleInput(event) {
@@ -103,7 +104,7 @@ function handleInput(event) {
             break;
 
         case '.':
-            if (['+', '-', '*', '/'].includes(displayMatrix[currentIndex].at(-1))) {
+            if (doOps.includes(displayMatrix[currentIndex].at(-1))) {
                 stopAdd = false;
             } else if (termCheck === undefined || termCheck.length === 0) {
                 stopAdd = false;
@@ -124,24 +125,22 @@ function handleInput(event) {
             if (termCheck === undefined || termCheck.length === 0) {
             } else if (termCheck.length === 0 && stopAdd === null) {
                 break;                
-            } else if (termCheck.length === 1 && ['+', '-', '*', '/'].includes(displayMatrix[currentIndex].at(-1)) && stopAdd === null) {
+            } else if (termCheck.length === 1 && doOps.includes(displayMatrix[currentIndex].at(-1)) && stopAdd === null) {
                 // Change operation
                 displayMatrix[currentIndex].splice(-1, 1, newToken);
                 break;
             } else if (termCheck.length >= 2 && stopAdd === null) {
-                answer = doCalc(displayMatrix[currentIndex]);
-                console.log(`Got Answer: ${answer}`);
+                let answer = doCalc(displayMatrix[currentIndex]);
                 currentIndex = (currentIndex + 1)
                 if (displayMatrix.length === 5) displayMatrix.shift();
                 displayMatrix[currentIndex] = new Array();
                 displayMatrix[currentIndex].push(answer);
-                if (['+', '-', '*', '/'].includes(newToken)) {
+                if (doOps.includes(newToken)) {
                     displayMatrix[currentIndex].push(newToken);
                 }
                 break;
             }
         default:
-            console.log(`Add to current line: ${newToken}`);
             displayMatrix[currentIndex].push(newToken);
             break;
     }
@@ -151,6 +150,7 @@ function handleInput(event) {
 
 let displayMatrix = new Array();
 let currentIndex = 0;
+const doOps = ['+', '-', '*', '/'];
 const displayDiv = document.querySelector('#display');
 const inputsDiv = document.querySelector('#inputs');
 inputsDiv.addEventListener('click', handleInput);

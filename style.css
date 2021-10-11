@@ -57,6 +57,10 @@ button {
     font-size: 12px;
 }
 
+#inputs .operation {
+    background-color: rgb(203, 218, 248);
+}
+
 button[id="0"] {
     grid-column: 1 / span 2;
 }
