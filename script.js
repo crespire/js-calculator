@@ -83,9 +83,9 @@ function handleInput(event) {
     let stopAdd = null;
     const sanitize = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '=', '/', '*', '-', '+', '.', 'c', 'x', 'Enter', 'Backspace', 'Escape'];
 
-    if ('key' in event) {
+    if (event.type === 'keydown') {
         newToken = event.key;
-    } else if ('target' in event) {
+    } else if (event.type === 'click') {
         newToken = event.target.id;
     } else {
         newToken = '_';
@@ -127,7 +127,7 @@ function handleInput(event) {
             } else if (termCheck.length >= 1) {
                 stopAdd = false;
                 termCheck.forEach((term) => {
-                    if (term.toString() === '.') stopAdd = true;
+                    if (term.toString().includes('.') || term === '.') stopAdd = true;
                 });
             }
 
@@ -147,7 +147,7 @@ function handleInput(event) {
                 displayMatrix[currentIndex].splice(-1, 1, newToken);
                 break;
             } else if (termCheck.length >= 2 && stopAdd === null) {
-                let answer = doCalc(displayMatrix[currentIndex]);
+                let answer = doCalc(displayMatrix[currentIndex]).toFixed(3);
                 currentIndex = (currentIndex + 1)
                 if (displayMatrix.length === 5) displayMatrix.shift();
                 displayMatrix[currentIndex] = new Array();
