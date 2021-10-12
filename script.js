@@ -149,6 +149,7 @@ function handleInput(event) {
                 break;
             } else if (termCheck.length >= 2 && stopAdd === null) {
                 let answer = doCalc(displayMatrix[currentIndex]);
+                
                 if (answer === '/0') {
                     alert('Divide by Zero!');
                     displayMatrix[currentIndex] = [];
@@ -156,9 +157,17 @@ function handleInput(event) {
                 } else {
                     answer.toFixed(3).toString();
                 }
+                
                 currentIndex += 1;
+                
                 if (displayMatrix.length >= 5) displayMatrix.shift();
-                displayMatrix[currentIndex] = [...answer];
+                
+                if (answer.length > 1) {
+                    displayMatrix[currentIndex] = [...answer];
+                } else {
+                    displayMatrix[currentIndex].push(answer);
+                }
+                
                 if (doOps.includes(newToken)) {
                     displayMatrix[currentIndex].push(newToken);
                 }
