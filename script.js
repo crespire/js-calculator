@@ -32,7 +32,7 @@ function getTerms(line) {
             }
         });
     } else {
-        parsedLine = line.slice();
+        parsedLine = Array(line.join(''));
     }
 
     return parsedLine;
@@ -78,11 +78,26 @@ function updateDisplay(displayData) {
 }
 
 function handleInput(event) {
-    // Check if event has a target attribute, if so, new token = id; otherwise if event has an event.key, set that as token. Is event.key a string?
-    let newToken = event.target.id;
-    let termCheck = getTerms(displayMatrix[currentIndex]);
+    event.preventDefault();
+    let newToken = null;
     let stopAdd = null;
-    
+    const sanitize = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '=', '/', '*', '-', '+', '.', 'clear', 'clearall', 'c', 'x', 'Enter', 'Backspace', 'Escape'];
+
+    if ('key' in event) {
+        newToken = event.key;
+    } else if ('target' in event) {
+        newToken = event.target.id;
+    } else {
+        newToken = '_';
+    }
+
+    if (!sanitize.includes(newToken)) {
+        console.log(`Got invalid key: ${newToken}`);
+        return;
+    }
+
+    let termCheck = getTerms(displayMatrix[currentIndex]);
+
     if (displayMatrix[currentIndex] === undefined) {
         displayMatrix[currentIndex] = new Array();
     }
@@ -90,15 +105,20 @@ function handleInput(event) {
     // Sanitize newToken before switch case - if newToken isn't an expected key, then break. Should be able to remove the 'inputs' switch case as well.
     // should have an accepted tokens const, and if newToken isn't in that lookup, then break.
 
+    console.log(`Token: ${newToken}`);
     switch (newToken) {
-        case 'inputs':
+        case 'Backspace':
+            if (displayMatrix[currentIndex].length > 0) {
+                displayMatrix[currentIndex].pop();
+            }
             break;
 
-        case 'clear':
+        case 'Escape':
+        case 'c':
             displayMatrix[currentIndex] = new Array();
             break;
  
-        case 'clearall':
+        case 'x':
             displayMatrix = new Array();
             currentIndex = 0;
             break;
@@ -109,9 +129,9 @@ function handleInput(event) {
             } else if (termCheck === undefined || termCheck.length === 0) {
                 stopAdd = false;
             } else if (termCheck.length >= 1) {
+                stopAdd = false;
                 termCheck.forEach((term) => {
-                    stopAdd = false;
-                    if (term.toString().includes('.')) stopAdd = true;
+                    if (term.toString() === '.') stopAdd = true;
                 });
             }
 
@@ -122,6 +142,7 @@ function handleInput(event) {
         case '*':
         case '/':
         case '=':
+        case 'Enter':
             if (termCheck === undefined || termCheck.length === 0) {
             } else if (termCheck.length === 0 && stopAdd === null) {
                 break;                
@@ -145,6 +166,7 @@ function handleInput(event) {
             break;
     }
 
+    console.dir(displayMatrix);
     updateDisplay(displayMatrix);
 }
 
@@ -154,3 +176,4 @@ const doOps = ['+', '-', '*', '/'];
 const displayDiv = document.querySelector('#display');
 const inputsDiv = document.querySelector('#inputs');
 inputsDiv.addEventListener('click', handleInput);
+window.addEventListener('keydown', handleInput);

@@ -64,8 +64,3 @@ button {
 button[id="0"] {
     grid-column: 1 / span 2;
 }
-
-button[id="="] {
-    grid-column: 1 / span 2;
-    grid-row: 5 / span 2;
-}
