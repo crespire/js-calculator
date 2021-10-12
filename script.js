@@ -95,11 +95,11 @@ function handleInput(event) {
         return;
     }
 
-    let termCheck = getTerms(displayMatrix[currentIndex]);
-
     if (displayMatrix[currentIndex] === undefined) {
         displayMatrix[currentIndex] = new Array();
     }
+
+    let termCheck = getTerms(displayMatrix[currentIndex]);
 
     switch (newToken) {
         case 'Backspace':
