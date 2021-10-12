@@ -145,7 +145,7 @@ function handleInput(event) {
                 break;
             } else if (termCheck.length >= 2 && stopAdd === null) {
                 let answer = doCalc(displayMatrix[currentIndex]).toFixed(3).toString();
-                currentIndex = (currentIndex + 1)
+                currentIndex += 1;
                 if (displayMatrix.length >= 5) displayMatrix.shift();
                 displayMatrix[currentIndex] = [...answer];
                 if (doOps.includes(newToken)) {
