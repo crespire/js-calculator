@@ -149,7 +149,7 @@ function handleInput(event) {
             } else if (termCheck.length >= 2 && stopAdd === null) {
                 let answer = doCalc(displayMatrix[currentIndex]).toFixed(3);
                 currentIndex = (currentIndex + 1)
-                if (displayMatrix.length === 5) displayMatrix.shift();
+                if (displayMatrix.length >= 5) displayMatrix.shift();
                 displayMatrix[currentIndex] = new Array();
                 displayMatrix[currentIndex].push(answer);
                 if (doOps.includes(newToken)) {
