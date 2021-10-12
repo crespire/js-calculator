@@ -126,7 +126,7 @@ function handleInput(event) {
             } else if (termCheck.length >= 1) {
                 stopAdd = false;
                 termCheck.forEach((term) => {
-                    if (term.toString().includes('.') || term === '.') stopAdd = true;
+                    if (term.toString().includes('.')) stopAdd = true;
                 });
             }
 
