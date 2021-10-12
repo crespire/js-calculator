@@ -157,12 +157,12 @@ function handleInput(event) {
                 }
                 break;
             }
+
         default:
             displayMatrix[currentIndex].push(newToken);
             break;
     }
 
-    console.dir(displayMatrix);
     updateDisplay(displayMatrix);
 }
 
