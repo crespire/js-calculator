@@ -42,6 +42,10 @@ function doCalc(line) {
     const [x, y] = getTerms(line);
     const operation = line.find(e => doOps.includes(e));
 
+    if (y === '0' && operation === '/') {
+        return "Div by Zero";
+    }
+
     switch (operation) {
         case '+':
             return doAdd(x, y);
@@ -144,7 +148,13 @@ function handleInput(event) {
                 displayMatrix[currentIndex].splice(-1, 1, newToken);
                 break;
             } else if (termCheck.length >= 2 && stopAdd === null) {
-                let answer = doCalc(displayMatrix[currentIndex]).toFixed(3).toString();
+                let answer = doCalc(displayMatrix[currentIndex]);
+                if (answer === 'Div by Zero') {
+                    alert('Divide by Zero!');
+                    break;
+                } else {
+                    answer.toFixed(3).toString();
+                }
                 currentIndex += 1;
                 if (displayMatrix.length >= 5) displayMatrix.shift();
                 displayMatrix[currentIndex] = [...answer];
