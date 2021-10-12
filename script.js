@@ -140,10 +140,8 @@ function handleInput(event) {
         case '=':
         case 'Enter':
             if (termCheck === undefined || termCheck.length === 0) {
-            } else if (termCheck.length === 0 && stopAdd === null) {
-                break;                
+                break;              
             } else if (termCheck.length === 1 && doOps.includes(displayMatrix[currentIndex].at(-1)) && stopAdd === null) {
-                // Change operation
                 displayMatrix[currentIndex].splice(-1, 1, newToken);
                 break;
             } else if (termCheck.length >= 2 && stopAdd === null) {
