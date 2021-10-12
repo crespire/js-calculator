@@ -77,11 +77,8 @@ function updateDisplay(displayData) {
     });
 }
 
-function mapKeyboard(event) {
-    // Map keyboard presses and call handleInput
-}
-
 function handleInput(event) {
+    // Check if event has a target attribute, if so, new token = id; otherwise if event has an event.key, set that as token. Is event.key a string?
     let newToken = event.target.id;
     let termCheck = getTerms(displayMatrix[currentIndex]);
     let stopAdd = null;
@@ -89,6 +86,9 @@ function handleInput(event) {
     if (displayMatrix[currentIndex] === undefined) {
         displayMatrix[currentIndex] = new Array();
     }
+
+    // Sanitize newToken before switch case - if newToken isn't an expected key, then break. Should be able to remove the 'inputs' switch case as well.
+    // should have an accepted tokens const, and if newToken isn't in that lookup, then break.
 
     switch (newToken) {
         case 'inputs':
