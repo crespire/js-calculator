@@ -43,7 +43,7 @@ function doCalc(line) {
     const operation = line.find(e => doOps.includes(e));
 
     if (y === '0' && operation === '/') {
-        return "Div by Zero";
+        return "/0";
     }
 
     switch (operation) {
@@ -149,8 +149,9 @@ function handleInput(event) {
                 break;
             } else if (termCheck.length >= 2 && stopAdd === null) {
                 let answer = doCalc(displayMatrix[currentIndex]);
-                if (answer === 'Div by Zero') {
+                if (answer === '/0') {
                     alert('Divide by Zero!');
+                    displayMatrix[currentIndex] = [];
                     break;
                 } else {
                     answer.toFixed(3).toString();
