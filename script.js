@@ -81,7 +81,7 @@ function handleInput(event) {
     event.preventDefault();
     let newToken = null;
     let stopAdd = null;
-    const sanitize = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '=', '/', '*', '-', '+', '.', 'clear', 'clearall', 'c', 'x', 'Enter', 'Backspace', 'Escape'];
+    const sanitize = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '=', '/', '*', '-', '+', '.', 'c', 'x', 'Enter', 'Backspace', 'Escape'];
 
     if ('key' in event) {
         newToken = event.key;
@@ -102,10 +102,6 @@ function handleInput(event) {
         displayMatrix[currentIndex] = new Array();
     }
 
-    // Sanitize newToken before switch case - if newToken isn't an expected key, then break. Should be able to remove the 'inputs' switch case as well.
-    // should have an accepted tokens const, and if newToken isn't in that lookup, then break.
-
-    console.log(`Token: ${newToken}`);
     switch (newToken) {
         case 'Backspace':
             if (displayMatrix[currentIndex].length > 0) {
