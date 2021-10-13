@@ -15,7 +15,6 @@ function doDivide(x, y) {
 }
 
 function parseLine(line) {
-    if (line === undefined || line.length === 0) return [];
     /**
      * Sample inputs to handle
      * ['-', '5', '+', '-', '6'] => 3 operators, case of two negative numbers
@@ -25,10 +24,10 @@ function parseLine(line) {
      */
 
     let stringOperation = line.join('');
-    let regex = /^(\-?\d*\.?\d*)([\/\*\-\+]{1})?(\-?\d*\.?\d*)?$/g;
+    let regex = /^(\-?\d*\.?\d+)([\/\*\-\+]{1})?(\-?\d*\.?\d+)?$/g;
     let found = regex.exec(stringOperation);
     // [index 0 is always the joined string, index 1 is the first term, index 2 is the operation, and index 3 is the last term], undefined values = not found
-    return found.slice(-3);
+    return (found) ? found.slice(-3) : null;
 }
 
 function doCalc(line) {
@@ -76,7 +75,7 @@ function updateDisplay(displayData) {
 
 function handleInput(event) {
     let newToken = null;
-    let stopAdd = null;
+    let skipCalc = null;
     const sanitize = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '=', '/', '*', '-', '+', '.', 'c', 'x', 'Enter', 'Backspace', 'Escape'];
 
     if (event.type === 'keydown') {
@@ -117,18 +116,22 @@ function handleInput(event) {
             break;
 
         case '.':
-            let stopAdd = null;
-            if (termCheck[1] === undefined && termCheck[0].includes) {
-                stopAdd = true;
+            // Which term are we error checking?
+            // If there is no operator, we're looking at the first otherwise we're looking at the second.
+            // If that term has a decimal already, don't add a second one.
+
+            if (termCheck[0] === undefined) {
+                skipCalc = false;
+            } else if (termCheck[1] === undefined) {
+                skipCalc = termCheck[0].includes('.');
+            } else if (termCheck[1].length === 1 && termCheck[-1] === undefined) {
+                skipCalc = false;
             } else {
-                stopAdd = false;
+                skipCalc = termCheck[-1].includes('.');
             }
             
-            if (termCheck[1].length > 0 && termCheck[2].length > 0 && termCheck[2].includes('.')) {
-                stopAdd = true;
-            }
 
-            if (stopAdd) break;
+            if (skipCalc) break;
 
         case '+':
         case '-':
@@ -136,37 +139,9 @@ function handleInput(event) {
         case '/':
         case '=':
         case 'Enter':
-            
-            if (stopAdd === null) {
-
-                // if the last term is undefined, we hit the wrong button so either ignore it, or change the operation
-                if (termCheck[2] === undefined && doOps.includes(termCheck[1])) {
-                    displayMatrix[currentIndex].splice(-1, 1, newToken);
-                    break;
-                } else if (termCheck[2] === undefined && (newToken === 'Enter' || newToken === '=')) {
-                    break;
-                }
+                        
+            if (skipCalc === null) {
                 
-                if (termCheck[2].length > 0) { // If the last term is defined, then do calculation
-                    let answer = doCalc(displayMatrix[currentIndex]);
-                    
-                    if (answer === '/0') {
-                        alert('Divide by zero... try another divisor.');
-                        displayMatrix[currentIndex].pop();
-                        break;
-                    } else {
-                        answer = +answer.toFixed(3);
-                    }
-                    
-                    currentIndex += 1;                    
-                    displayMatrix[currentIndex] = [...answer.toString()];
-                    
-                    if (doOps.includes(newToken)) {
-                        displayMatrix[currentIndex].push(newToken);
-                    }
-
-                    break;
-                }
             }
 
         default:
@@ -179,6 +154,7 @@ function handleInput(event) {
 
 let displayMatrix = new Array();
 let currentIndex = 0;
+let skipCalc = null;
 const doOps = ['+', '-', '*', '/'];
 const displayDiv = document.querySelector('#display');
 const inputsDiv = document.querySelector('#inputs');
