@@ -25,7 +25,7 @@ function parseLine(line) {
 function doCalc(line) {
     const [x, operation, y] = parseLine(line);
 
-    if (y === '0' && operation === '/') {
+    if (+y === 0 && operation === '/') {
         return '/0';
     }
 
