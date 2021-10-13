@@ -15,16 +15,8 @@ function doDivide(x, y) {
 }
 
 function parseLine(line) {
-    /**
-     * Sample inputs to handle
-     * ['-', '5', '+', '-', '6'] => 3 operators, case of two negative numbers
-     * ['-', '5', '-', '6'] or ['5', '-', '-', '6'] => 2 operators, case of one negative number.
-     * ['5', '+', '6'] or ['-', '5']=> 1 operator, either 1 negative number, or line incomplete.
-     * 
-     */
-
     let stringOperation = line.join('');
-    let regex = /^(\-?\d*\.?\d+)([\/\*\-\+]{1})?(\-?\d*\.?\d+)?$/g;
+    let regex = /^([-]?\d*\.?\d*)([\/\*\-\+])?([-]?\d*\.?\d*)?$/gi;
     let found = regex.exec(stringOperation);
     // [index 0 is always the joined string, index 1 is the first term, index 2 is the operation, and index 3 is the last term], undefined values = not found
     return (found) ? found.slice(-3) : null;
@@ -117,17 +109,18 @@ function handleInput(event) {
 
         case '.':
             // Which term are we error checking?
-            // If there is no operator, we're looking at the first otherwise we're looking at the second.
-            // If that term has a decimal already, don't add a second one.
+            // If there is no operator, we're looking at the first
+            // Otherwise, if there is an operator, but there is no second term, new term, so add it.
+            // otherwise, there is a second term already so check it and don't add a second one.
 
-            if (termCheck[0] === undefined) {
+            if (termCheck.at(0) == undefined) {
                 skipCalc = false;
-            } else if (termCheck[1] === undefined) {
+            } else if (termCheck.at(1) == undefined) {
                 skipCalc = termCheck[0].includes('.');
-            } else if (termCheck[1].length === 1 && termCheck[-1] === undefined) {
+            } else if (termCheck[1].length === 1 && (termCheck.at(-1) == undefined || termCheck.at(-1).length < 1)) {
                 skipCalc = false;
             } else {
-                skipCalc = termCheck[-1].includes('.');
+                skipCalc = termCheck.at(-1).includes('.');
             }
             
 
@@ -141,7 +134,43 @@ function handleInput(event) {
         case 'Enter':
                         
             if (skipCalc === null) {
-                
+                // parseLine returns null if the calculation is malformed, but it will happily return a 3 element array if everything fits into the pattern.
+                // If the last term is not undefined (ie, whatever we parsed is valid and filled up all three elements), then do the calculation
+                //   Advance the index, push the answer and add the current token if we have another operator
+                // If we have an undefined last term, then whatever we have up until now is fine, add the token.
+                // If we have a null value from parseLine, whatever was entered last was not correctly formed, so remove that element and break (don't add the current token)
+
+                if (!(termCheck.at(-1) == undefined)) {
+                    let answer = doCalc(displayMatrix[currentIndex]);
+                    
+                    if (answer === '/0') {
+                        alert('Divide by zero, try another divisor');
+                        displayMatrix[currentIndex].pop();
+                        break;
+                    }
+
+                    answer = +answer.toFixed(3);
+                    currentIndex += 1;
+                    displayMatrix[currentIndex] = new Array();
+                    displayMatrix[currentIndex] = [...answer.toString()];
+                    if (doOps.includes(newToken)) {
+                        displayMatrix[currentIndex].push(newToken);
+                    }
+                    break;
+                } else if (doOps.includes(termCheck.at(1)) && doOps.includes(newToken)) {
+                    if (!(newToken === '-')) {
+                        displayMatrix[currentIndex].splice(-1,1,newToken);
+                        break;
+                    } else {
+                        if (!(termCheck.at[-1] == undefined)) {
+                            break;
+                        }
+                    }
+                    
+                } else if (termCheck === null) {
+                    displayMatrix[currentIndex].pop();
+                    break;
+                }
             }
 
         default:
