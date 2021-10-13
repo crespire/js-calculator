@@ -18,7 +18,6 @@ function parseLine(line) {
     let stringOperation = line.join('');
     let regex = /^([-]?\d*\.?\d*)([\/\*\-\+])?([-]?\d*\.?\d*)?$/gi;
     let found = regex.exec(stringOperation);
-    // [index 0 is always the joined string, index 1 is the first term, index 2 is the operation, and index 3 is the last term], undefined values = not found
     return (found) ? found.slice(-3) : null;
 }
 
@@ -108,11 +107,6 @@ function handleInput(event) {
             break;
 
         case '.':
-            // Which term are we error checking?
-            // If there is no operator, we're looking at the first
-            // Otherwise, if there is an operator, but there is no second term, new term, so add it.
-            // otherwise, there is a second term already so check it and don't add a second one.
-
             if (termCheck.at(0) == undefined) {
                 skipCalc = false;
             } else if (termCheck.at(1) == undefined) {
@@ -122,7 +116,6 @@ function handleInput(event) {
             } else {
                 skipCalc = termCheck.at(-1).includes('.');
             }
-            
 
             if (skipCalc) break;
 
@@ -132,14 +125,8 @@ function handleInput(event) {
         case '/':
         case '=':
         case 'Enter':
-                        
-            if (skipCalc === null) {
-                // parseLine returns null if the calculation is malformed, but it will happily return a 3 element array if everything fits into the pattern.
-                // If the last term is not undefined (ie, whatever we parsed is valid and filled up all three elements), then do the calculation
-                //   Advance the index, push the answer and add the current token if we have another operator
-                // If we have an undefined last term, then whatever we have up until now is fine, add the token.
-                // If we have a null value from parseLine, whatever was entered last was not correctly formed, so remove that element and break (don't add the current token)
 
+            if (skipCalc === null) {
                 if (!(termCheck.at(-1) == undefined)) {
                     let answer = doCalc(displayMatrix[currentIndex]);
                     
@@ -166,7 +153,6 @@ function handleInput(event) {
                             break;
                         }
                     }
-                    
                 } else if (termCheck === null) {
                     displayMatrix[currentIndex].pop();
                     break;
