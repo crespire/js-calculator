@@ -83,7 +83,7 @@ function handleInput(event) {
     }
     event.preventDefault();
 
-    if (displayMatrix[currentIndex] === undefined) {
+    if (displayMatrix[currentIndex] == undefined) {
         displayMatrix[currentIndex] = new Array();
     }
 
@@ -130,7 +130,7 @@ function handleInput(event) {
                     let answer = doCalc(displayMatrix[currentIndex]);
                     
                     if (answer === '/0') {
-                        alert('Divide by zero, try another divisor');
+                        alert('Divide by zero, try another divisor!');
                         displayMatrix[currentIndex].pop();
                         break;
                     }
@@ -149,10 +149,7 @@ function handleInput(event) {
                         break;
                     } else if (!(termCheck.at(-1) == undefined)) {
                         break;
-                    } 
-                } else if (termCheck === null) {
-                    displayMatrix[currentIndex].pop();
-                    break;
+                    }
                 }
             }
 
@@ -166,7 +163,6 @@ function handleInput(event) {
 
 let displayMatrix = new Array();
 let currentIndex = 0;
-let skipCalc = null;
 const doOps = ['+', '-', '*', '/'];
 const displayDiv = document.querySelector('#display');
 const inputsDiv = document.querySelector('#inputs');
