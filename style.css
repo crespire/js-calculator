@@ -2,17 +2,27 @@
     font-family: monospace;
 }
 
-button, body {
-    margin: 0;
+button, body, html {
+    margin: 0px;
+    padding: 0px;
 }
 
 body {
     padding: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-content: center;
+    height: 100vh;
+}
+
+#footer {
+    align-self: center;
 }
 
 .container {
     display: flex;
-    height: 95vh;
     justify-content: center;
     align-items: center;
 }
