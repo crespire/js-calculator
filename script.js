@@ -126,20 +126,6 @@ function handleInput(event) {
         case '=':
         case 'Enter':
             if (skipCalc === null) {
-
-                /** We have an action
-                 * If !(termCheck.at(-1) == undefined { // We have all three terms
-                 *      get answer
-                 *      check for /0
-                 *      round answer
-                 *      add new line
-                 *      add value to new line
-                 *      if action was operation, add that too
-                 * 
-                 */ 
-
-
-
                 if (!(termCheck.at(-1) == undefined) && !(doOps.includes(displayMatrix[currentIndex].at(-1)))) {
                     let answer = doCalc(displayMatrix[currentIndex]);
                     
@@ -164,8 +150,8 @@ function handleInput(event) {
                     } else if (!(termCheck.at(-1) == undefined)) {
                         break;
                     } 
-                } else if (termCheck === null) {
-                    displayMatrix[currentIndex].pop();
+                } else if (termCheck.at(0).includes('-') && termCheck.at(1) == undefined) {
+                } else if (termCheck.at(0).includes('.')) {
                     break;
                 }
             }
