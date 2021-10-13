@@ -152,7 +152,6 @@ function handleInput(event) {
                     } 
                 } else if (termCheck.at(0) && displayMatrix[currentIndex].at(-1).includes('-')) {
                     break;
-                } else if (termCheck.at(0).includes('-') && termCheck.at(1) == undefined) {
                 }
             }
 
