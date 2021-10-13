@@ -125,9 +125,8 @@ function handleInput(event) {
         case '/':
         case '=':
         case 'Enter':
-
             if (skipCalc === null) {
-                if (!(termCheck.at(-1) == undefined)) {
+                if (!(termCheck.at(-1) == undefined) && !(doOps.includes(displayMatrix[currentIndex].at(-1)))) {
                     let answer = doCalc(displayMatrix[currentIndex]);
                     
                     if (answer === '/0') {
@@ -148,11 +147,9 @@ function handleInput(event) {
                     if (!(newToken === '-')) {
                         displayMatrix[currentIndex].splice(-1,1,newToken);
                         break;
-                    } else {
-                        if (!(termCheck.at[-1] == undefined)) {
-                            break;
-                        }
-                    }
+                    } else if (!(termCheck.at(-1) == undefined)) {
+                        break;
+                    } 
                 } else if (termCheck === null) {
                     displayMatrix[currentIndex].pop();
                     break;
