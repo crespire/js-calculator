@@ -152,7 +152,7 @@ function handleInput(event) {
                 
                 if (answer === '/0') {
                     alert('Divide by Zero!');
-                    displayMatrix[currentIndex] = [];
+                    displayMatrix[currentIndex].pop();
                     break;
                 } else {
                     answer.toFixed(3).toString();
@@ -165,6 +165,7 @@ function handleInput(event) {
                 if (answer.length > 1) {
                     displayMatrix[currentIndex] = [...answer];
                 } else {
+                    displayMatrix[currentIndex] = new Array();
                     displayMatrix[currentIndex].push(answer);
                 }
                 
@@ -179,6 +180,7 @@ function handleInput(event) {
             break;
     }
 
+    console.dir(displayMatrix);
     updateDisplay(displayMatrix);
 }
 
