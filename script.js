@@ -126,6 +126,30 @@ function handleInput(event) {
         case '=':
         case 'Enter':
             if (skipCalc === null) {
+
+                /** We have an action
+                 * If !(termCheck.at(-1) == undefined { // We have all three terms
+                 *      get answer
+                 *      check for /0
+                 *      round answer
+                 *      add new line
+                 *      add value to new line
+                 *      if action was operation, add that too
+                 * 
+                 * If action is minus
+                 *       If there is no operation & termCheck[0] is true, then if it has a minus, break
+                 *       if there is an operation & termCheck[0] is true, continue
+                *        if there is an operation & termCheck[-1] is true, then if it has a minus, break
+                 * else
+                 *      if termCheck[1] is true and action isn't equals
+                 *           replace operation
+                 * 
+                 *  
+                 * 
+                 */ 
+
+
+
                 if (!(termCheck.at(-1) == undefined) && !(doOps.includes(displayMatrix[currentIndex].at(-1)))) {
                     let answer = doCalc(displayMatrix[currentIndex]);
                     
@@ -143,12 +167,19 @@ function handleInput(event) {
                         displayMatrix[currentIndex].push(newToken);
                     }
                     break;
-                } else if (doOps.includes(termCheck.at(1)) && doOps.includes(newToken)) {
-                    if (!(newToken === '-')) {
-                        displayMatrix[currentIndex].splice(-1,1,newToken);
-                        break;
-                    } else if (!(termCheck.at(-1) == undefined)) {
-                        break;
+                }
+
+                if (newToken === '-') {
+                    if (!termCheck[1] && termCheck[0]) {
+                        if (termCheck.at[0].includes('-')) break;
+                    } else if (termCheck[1] && termCheck[0]) {
+                        // Continue
+                    } else if (termCheck[1] && termCheck[-1]) {
+                        if (termCheck.at(-1).includes('-')) break;
+                    }
+                } else {
+                    if (termCheck[1] && !(['=', 'Enter'].includes(newToken))) {
+                        displayMatrix[currentIndex].splice(-1, 1, newToken);
                     }
                 }
             }
