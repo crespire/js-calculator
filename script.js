@@ -17,11 +17,30 @@ function doDivide(x, y) {
 function getTerms(line) {
     if (line === undefined) return;
     
-    let operations = line.filter(e => doOps.includes(e));
+    // let operations = line.filter(e => doOps.includes(e));
     let parsedLine = new Array;
-    let termTrack = 0;
 
-    if (operations.length > 0) {
+    /**
+     * Sample inputs to handle
+     * ['-', '5', '+', '-', '6'] => 3 operators, case of two negative numbers
+     * ['-', '5', '-', '6'] or ['5', '-', '-', '6'] => 2 operators, case of one negative number.
+     * ['5', '+', '6'] or ['-', '5']=> 1 operator, either 1 negative number, or line incomplete.
+     * 
+     * 
+     * if we have 3 operations, then we know that we have a two negative numbers. So we can do some fancy array shit to split it. full array to string, split by the middle operator and there are your terms.
+     * if we have 2 operations, then we have one negative number. The negative that is preceeded by another one marks the start of our split.
+     * If we have 1 operation, then we have either one negative number or two terms.
+     */
+
+    let stringOperation = line.join('');
+    let regex = /(-?\d+){1}([+/*-])?(-?\d+)?/g;
+    let found = regex.exec(stringOperation);
+    //let found = stringOperation.matchAll(regex);
+    return found;
+
+
+    /** Not best practice to comment out old code, but here we are.
+    if (operations.length === 1) {
         operations.forEach((operator, currInd) => {
             let term = line.slice(termTrack, line.indexOf(operator)).join('');
             parsedLine.push(term);
@@ -31,11 +50,14 @@ function getTerms(line) {
                 parsedLine.push(term);
             }
         });
+    } else if (operations.length === 2) {
+        
     } else {
         parsedLine = Array(line.join(''));
     }
+     */
 
-    return parsedLine;
+    //return parsedLine;
 }
 
 function doCalc(line) {
@@ -43,7 +65,7 @@ function doCalc(line) {
     const operation = line.find(e => doOps.includes(e));
 
     if (y === '0' && operation === '/') {
-        return "/0";
+        return '/0';
     }
 
     switch (operation) {
@@ -65,7 +87,9 @@ function doCalc(line) {
 function updateDisplay(displayData) {
     displayDiv.innerHTML = '';
 
-    displayData.forEach((line) => {
+    let cropDisplay = displayData.slice(-5);
+
+    cropDisplay.forEach((line) => {
         let newDiv = document.createElement('div');
         let lineText = [];
         line.forEach( (token) => {
@@ -81,7 +105,6 @@ function updateDisplay(displayData) {
 }
 
 function handleInput(event) {
-    event.preventDefault();
     let newToken = null;
     let stopAdd = null;
     const sanitize = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '=', '/', '*', '-', '+', '.', 'c', 'x', 'Enter', 'Backspace', 'Escape'];
@@ -98,6 +121,7 @@ function handleInput(event) {
         console.log(`Got invalid key: ${newToken}`);
         return;
     }
+    event.preventDefault();
 
     if (displayMatrix[currentIndex] === undefined) {
         displayMatrix[currentIndex] = new Array();
@@ -142,37 +166,39 @@ function handleInput(event) {
         case '/':
         case '=':
         case 'Enter':
+
             if (termCheck === undefined || termCheck.length === 0) {
                 break;              
-            } else if (termCheck.length === 1 && doOps.includes(displayMatrix[currentIndex].at(-1)) && stopAdd === null) {
-                displayMatrix[currentIndex].splice(-1, 1, newToken);
-                break;
-            } else if (termCheck.length >= 2 && stopAdd === null) {
-                let answer = doCalc(displayMatrix[currentIndex]);
-                
-                if (answer === '/0') {
-                    alert('Divide by Zero!');
-                    displayMatrix[currentIndex].pop();
+            }
+            
+            if (stopAdd === null) {
+                if (termCheck.length === 1) {
+                    if (doOps.includes(displayMatrix[currentIndex].at(-1))) {
+                        displayMatrix[currentIndex].splice(-1, 1, newToken);
+                        break;
+                    } else if (newToken === 'Enter' || newToken === '=') {
+                        break;
+                    }
+                } else {
+                    let answer = doCalc(displayMatrix[currentIndex]);
+                    
+                    if (answer === '/0') {
+                        alert('Divide by zero... try another divisor.');
+                        displayMatrix[currentIndex].pop();
+                        break;
+                    } else {
+                        answer = +answer.toFixed(3);
+                    }
+                    
+                    currentIndex += 1;                    
+                    displayMatrix[currentIndex] = [...answer.toString()];
+                    
+                    if (doOps.includes(newToken)) {
+                        displayMatrix[currentIndex].push(newToken);
+                    }
+
                     break;
-                } else {
-                    answer.toFixed(3).toString();
                 }
-                
-                currentIndex += 1;
-                
-                if (displayMatrix.length >= 5) displayMatrix.shift();
-                
-                if (answer.length > 1) {
-                    displayMatrix[currentIndex] = [...answer];
-                } else {
-                    displayMatrix[currentIndex] = new Array();
-                    displayMatrix[currentIndex].push(answer);
-                }
-                
-                if (doOps.includes(newToken)) {
-                    displayMatrix[currentIndex].push(newToken);
-                }
-                break;
             }
 
         default:
@@ -180,7 +206,6 @@ function handleInput(event) {
             break;
     }
 
-    console.dir(displayMatrix);
     updateDisplay(displayMatrix);
 }
 
