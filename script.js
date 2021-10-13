@@ -157,8 +157,17 @@ function handleInput(event) {
                         displayMatrix[currentIndex].push(newToken);
                     }
                     break;
+                } else if (doOps.includes(termCheck.at(1)) && doOps.includes(newToken)) {
+                    if (!(newToken === '-')) {
+                        displayMatrix[currentIndex].splice(-1, 1, newToken);
+                        break;
+                    } else if (!(termCheck.at(-1) == undefined)) {
+                        break;
+                    } 
+                } else if (termCheck === null) {
+                    displayMatrix[currentIndex].pop();
+                    break;
                 }
-
             }
 
         default:
