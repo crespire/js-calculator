@@ -16,10 +16,6 @@ function doDivide(x, y) {
 
 function getTerms(line) {
     if (line === undefined) return;
-    
-    // let operations = line.filter(e => doOps.includes(e));
-    let parsedLine = new Array;
-
     /**
      * Sample inputs to handle
      * ['-', '5', '+', '-', '6'] => 3 operators, case of two negative numbers
@@ -33,31 +29,10 @@ function getTerms(line) {
      */
 
     let stringOperation = line.join('');
-    let regex = /(-?\d+){1}([+/*-])?(-?\d+)?/g;
+    let regex = /(-?\d+){1}(\+|\/|\*|\-)?(-?\d+)?/g;
     let found = regex.exec(stringOperation);
-    //let found = stringOperation.matchAll(regex);
+    // [index 0 is always the joined string, index 1 is the first term, index 2 is the operation, and index 3 is the last term], values can be undefined.
     return found;
-
-
-    /** Not best practice to comment out old code, but here we are.
-    if (operations.length === 1) {
-        operations.forEach((operator, currInd) => {
-            let term = line.slice(termTrack, line.indexOf(operator)).join('');
-            parsedLine.push(term);
-            termTrack = line.indexOf(operator)+1;
-            if (currInd === operations.length - 1 && line.length > 2) {
-                term = line.slice(line.indexOf(operator) - (line.length - 1) ).join('');
-                parsedLine.push(term);
-            }
-        });
-    } else if (operations.length === 2) {
-        
-    } else {
-        parsedLine = Array(line.join(''));
-    }
-     */
-
-    //return parsedLine;
 }
 
 function doCalc(line) {
