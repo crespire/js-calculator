@@ -119,8 +119,8 @@ function handleInput(event) {
 
             if (skipCalc) break;
 
-        case '+':
         case '-':
+        case '+':
         case '*':
         case '/':
         case '=':
@@ -135,16 +135,6 @@ function handleInput(event) {
                  *      add new line
                  *      add value to new line
                  *      if action was operation, add that too
-                 * 
-                 * If action is minus
-                 *       If there is no operation & termCheck[0] is true, then if it has a minus, break
-                 *       if there is an operation & termCheck[0] is true, continue
-                *        if there is an operation & termCheck[-1] is true, then if it has a minus, break
-                 * else
-                 *      if termCheck[1] is true and action isn't equals
-                 *           replace operation
-                 * 
-                 *  
                  * 
                  */ 
 
@@ -169,19 +159,6 @@ function handleInput(event) {
                     break;
                 }
 
-                if (newToken === '-') {
-                    if (!termCheck[1] && termCheck[0]) {
-                        if (termCheck.at[0].includes('-')) break;
-                    } else if (termCheck[1] && termCheck[0]) {
-                        // Continue
-                    } else if (termCheck[1] && termCheck[-1]) {
-                        if (termCheck.at(-1).includes('-')) break;
-                    }
-                } else {
-                    if (termCheck[1] && !(['=', 'Enter'].includes(newToken))) {
-                        displayMatrix[currentIndex].splice(-1, 1, newToken);
-                    }
-                }
             }
 
         default:
