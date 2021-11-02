@@ -89,6 +89,8 @@ function handleInput(event) {
 
     let termCheck = parseLine(displayMatrix[currentIndex]);
 
+    if (termCheck == null) { return; }
+
     switch (newToken) {
         case 'Backspace':
             if (displayMatrix[currentIndex].length > 0) {
