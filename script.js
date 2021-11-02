@@ -155,7 +155,7 @@ function handleInput(event) {
                 } else if (['=', 'Enter'].includes(newToken)) {
                     if (termCheck.at(1) == undefined && termCheck.at(-1) == undefined) break;
                     if (termCheck.at(0) && termCheck.at(1) == undefined) break;
-                    if (termCheck.at(1) && termCheck.at(2) == undefined) break;
+                    if (termCheck.at(1) && termCheck.at(-1) == undefined) break;
                 }
             }
 
