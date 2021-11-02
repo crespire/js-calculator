@@ -87,7 +87,7 @@ function handleInput(event) {
         displayMatrix[currentIndex] = new Array();
     }
 
-    let termCheck = [...parseLine(displayMatrix[currentIndex])];
+    let termCheck = parseLine(displayMatrix[currentIndex]);
 
     switch (newToken) {
         case 'Backspace':
@@ -126,7 +126,7 @@ function handleInput(event) {
         case '=':
         case 'Enter':
             if (skipCalc === null) {
-                if (!(termCheck.at(-1) == undefined) && !(doOps.includes(displayMatrix[currentIndex].at(-1)))) {
+                if (!(termCheck.at(2) == undefined) && !(doOps.includes(displayMatrix[currentIndex].at(2)))) {
                     let answer = doCalc(displayMatrix[currentIndex]);
                     
                     if (answer === '/0') {
@@ -147,14 +147,15 @@ function handleInput(event) {
                     if (!(newToken === '-')) {
                         displayMatrix[currentIndex].splice(-1, 1, newToken);
                         break;
-                    } else if (!(termCheck.at(-1) == undefined)) {
+                    } else if (!(termCheck.at(2) == undefined)) {
                         break;
                     }
-                } else if (termCheck.at(0) && displayMatrix[currentIndex].at(-1).includes('-')) {
+                } else if (termCheck.at(0) && displayMatrix[currentIndex].at(2).includes('-')) {
                     break;
                 } else if (['=', 'Enter'].includes(newToken)) {
+                    if (termCheck.at(1) == undefined && termCheck.at(2) == undefined) break;
                     if (termCheck.at(0) && termCheck.at(1) == undefined) break;
-                    if (termCheck.at(1) && termCheck.at(-1) == undefined) break;
+                    if (termCheck.at(1) && termCheck.at(2) == undefined) break;
                 }
             }
 
