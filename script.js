@@ -140,7 +140,7 @@ function handleInput(event) {
                     answer = +answer.toFixed(3);
                     currentIndex += 1;
                     displayMatrix[currentIndex] = new Array();
-                    displayMatrix[currentIndex] = [...answer.toString()];
+                    displayMatrix[currentIndex].push(answer.toString());
                     if (doOps.includes(newToken)) {
                         displayMatrix[currentIndex].push(newToken);
                     }
