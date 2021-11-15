@@ -128,7 +128,7 @@ function handleInput(event) {
         case '=':
         case 'Enter':
             if (skipCalc === null) {
-                if (!(termCheck.at(-1) == undefined) && !(doOps.includes(displayMatrix[currentIndex].at(1)))) {
+                if (!(termCheck.at(-1) == undefined) && !(doOps.includes(displayMatrix[currentIndex].at(-1)))) {
                     let answer = doCalc(displayMatrix[currentIndex]);
                     
                     if (answer === '/0') {
