@@ -70,6 +70,12 @@ body {
     font-size: 12px;
 }
 
+#inputs button:active {
+    box-shadow: none;
+    transform: translate(2px, 2px);
+}
+
+
 #inputs .operation {
     background-color: rgb(203, 218, 248);
 }
